@@ -18,7 +18,7 @@ In this primer we will be focusing on how to interact between services you creat
 
 As an example we will show how to use the basics of Google's Speech to Text API.  
 
-We will introduce the TgoGoogle base class which handles the aspects of OAuth2, Java Web Tokens and uses Grijjy's scalable TCP and HTTP/S socket classes that are designed for Windows and Linux.  
+We will introduce the TgoGoogle base class which handles the aspects of OAuth2, Java Web Tokens and uses [Grijjy's scalable TCP and HTTP/S socket classes](https://blog.grijjy.com/2017/01/09/scalable-https-and-tcp-client-sockets-for-the-cloud/) that are designed for Windows and Linux.  
 
 > Note: The examples contained here do not necessarily rely on a virtual instance running in the Google Compute Engine.  Many of the APIs can be called remotely using the same Delphi code running on your desktop.
 
