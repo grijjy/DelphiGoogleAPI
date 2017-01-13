@@ -1,4 +1,4 @@
-# Using the Google Cloud Platform in Delphi
+# Using the Google Cloud Platform APIs
 This article covers how to use the Google Cloud Platform in conjunction with the Google Compute Engine to call various Google APIs.  In this article we show how to call the new Speech-To-Text API from a backend instance running on the Google Compute Engine.
 
 If you are creating services for the cloud these days then you are probably familiar with [Amazon's AWS](https://aws.amazon.com/) and [Microsoft's Azure](https://azure.microsoft.com).  Google has their own offering called the [Google Compute Engine](https://cloud.google.com/compute/) (GCE) where you can deploy and operate your services in the cloud and leverage their numerous and excellent [Google Cloud Platform](https://cloud.google.com/) (GCP) APIs directly from your service.
