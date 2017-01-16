@@ -60,10 +60,10 @@ end;
 
 procedure TFormMain.ButtonPostClick(Sender: TObject);
 var
-  Google: TgoGoogle;
+  Google: TGCPAPI;
   ResponseHeaders, ResponseContent: String;
 begin
-  Google := TgoGoogle.Create;
+  Google := TGCPAPI.Create;
   try
     Google.OAuthScope := EditOAuthScope.Text;
     Google.ServiceAccount := EditServiceAccount.Text;

@@ -1,0 +1,348 @@
+object frmGCPMegaDemo: TfrmGCPMegaDemo
+  Left = 0
+  Top = 0
+  Caption = 'GCP API Mega Demo'
+  ClientHeight = 675
+  ClientWidth = 987
+  Position = ScreenCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  OnResize = FormResize
+  DesignerMasterStyle = 0
+  object gpGCPProperties: TGroupBox
+    Align = Top
+    Padding.Left = 5.000000000000000000
+    Padding.Top = 18.000000000000000000
+    Padding.Right = 5.000000000000000000
+    Padding.Bottom = 5.000000000000000000
+    Size.Width = 987.000000000000000000
+    Size.Height = 65.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Google Cloud Platform Properties'
+    TabOrder = 0
+    object layProperitesServiceAccount: TLayout
+      Align = MostLeft
+      Position.X = 5.000000000000000000
+      Position.Y = 18.000000000000000000
+      Size.Width = 321.000000000000000000
+      Size.Height = 42.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 2
+      object Text6: TText
+        Align = MostTop
+        Size.Width = 321.000000000000000000
+        Size.Height = 19.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'GCP Service Account'
+        TextSettings.HorzAlign = Leading
+      end
+      object edtServiceAccount: TEdit
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        Align = Client
+        TabOrder = 1
+        Text = '1094396857382-compute@developer.gserviceaccount.com'
+        Size.Width = 321.000000000000000000
+        Size.Height = 23.000000000000000000
+        Size.PlatformDefault = False
+      end
+    end
+    object layProperitesOAuthScope: TLayout
+      Align = MostRight
+      Position.X = 790.000000000000000000
+      Position.Y = 18.000000000000000000
+      Size.Width = 192.000000000000000000
+      Size.Height = 42.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      object Text7: TText
+        Align = MostTop
+        Size.Width = 192.000000000000000000
+        Size.Height = 19.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'OAuth Scope'
+        TextSettings.HorzAlign = Leading
+      end
+      object edtOAuthScope: TEdit
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        Align = Client
+        TabOrder = 1
+        Text = 'https://www.googleapis.com/auth/cloud-platform'
+        Size.Width = 192.000000000000000000
+        Size.Height = 23.000000000000000000
+        Size.PlatformDefault = False
+      end
+    end
+    object layProperitesPEMFile: TLayout
+      Align = Client
+      Margins.Left = 3.000000000000000000
+      Margins.Right = 3.000000000000000000
+      Size.Width = 458.000000000000000000
+      Size.Height = 42.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      object Layout5: TLayout
+        Align = Client
+        Size.Width = 458.000000000000000000
+        Size.Height = 23.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        object edtPEMFile: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Client
+          TabOrder = 0
+          Text = 'C:\Users\norge\Downloads\key.pem'
+          Size.Width = 431.000000000000000000
+          Size.Height = 23.000000000000000000
+          Size.PlatformDefault = False
+        end
+        object btnPEMSelect: TButton
+          Action = actOpenPEMFile
+          Align = MostRight
+          Enabled = True
+          ImageIndex = -1
+          Margins.Left = 3.000000000000000000
+          Position.X = 434.000000000000000000
+          Size.Width = 24.000000000000000000
+          Size.Height = 23.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 1
+          Visible = True
+        end
+      end
+      object Text8: TText
+        Align = MostTop
+        Size.Width = 458.000000000000000000
+        Size.Height = 19.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'PEM File'
+        TextSettings.HorzAlign = Leading
+      end
+    end
+  end
+  object Layout1: TLayout
+    Align = Client
+    Size.Width = 987.000000000000000000
+    Size.Height = 610.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    object tcService: TTabControl
+      Align = MostLeft
+      Margins.Left = 3.000000000000000000
+      Margins.Right = 3.000000000000000000
+      Margins.Bottom = 3.000000000000000000
+      Position.X = 3.000000000000000000
+      Size.Width = 438.000000000000000000
+      Size.Height = 607.000000000000000000
+      Size.PlatformDefault = False
+      TabIndex = 0
+      TabOrder = 2
+      TabPosition = PlatformDefault
+      Sizes = (
+        438s
+        581s)
+      object tabSpeech: TTabItem
+        CustomIcon = <
+          item
+          end>
+        IsSelected = True
+        Size.Width = 59.000000000000000000
+        Size.Height = 26.000000000000000000
+        Size.PlatformDefault = False
+        StyleLookup = ''
+        TabOrder = 0
+        Text = 'Speech'
+      end
+    end
+    object Layout2: TLayout
+      Align = Client
+      Size.Width = 543.000000000000000000
+      Size.Height = 610.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 3
+      object Text1: TText
+        Align = Top
+        Margins.Right = 3.000000000000000000
+        Margins.Bottom = 3.000000000000000000
+        Size.Width = 540.000000000000000000
+        Size.Height = 23.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'Results'
+        TextSettings.HorzAlign = Leading
+      end
+      object Rectangle1: TRectangle
+        Align = Client
+        Fill.Color = claWhite
+        Size.Width = 543.000000000000000000
+        Size.Height = 584.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Kind = None
+      end
+      object tcResults: TTabControl
+        Align = Client
+        Size.Width = 543.000000000000000000
+        Size.Height = 584.000000000000000000
+        Size.PlatformDefault = False
+        TabIndex = 2
+        TabOrder = 2
+        TabPosition = PlatformDefault
+        Sizes = (
+          543s
+          558s
+          543s
+          558s
+          543s
+          558s)
+        object tabNoResults: TTabItem
+          CustomIcon = <
+            item
+            end>
+          IsSelected = False
+          Size.Width = 91.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'tabNoResults'
+          object Text2: TText
+            Align = Client
+            Margins.Left = 3.000000000000000000
+            Margins.Top = 3.000000000000000000
+            Margins.Right = 3.000000000000000000
+            Margins.Bottom = 3.000000000000000000
+            Size.Width = 537.000000000000000000
+            Size.Height = 552.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'Please select a service and execute a request'
+          end
+        end
+        object tabError: TTabItem
+          CustomIcon = <
+            item
+            end>
+          IsSelected = False
+          Size.Width = 63.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'tabError'
+          object Text3: TText
+            Align = Top
+            Size.Width = 543.000000000000000000
+            Size.Height = 50.000000000000000000
+            Size.PlatformDefault = False
+            Text = '404'
+            TextSettings.Font.Size = 40.000000000000000000
+            TextSettings.FontColor = claRed
+          end
+          object memError: TMemo
+            Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+            DataDetectorTypes = []
+            ReadOnly = True
+            StyledSettings = [Style, FontColor]
+            TextSettings.Font.Family = 'Consolas'
+            TextSettings.Font.Size = 11.000000000000000000
+            Align = Client
+            Margins.Left = 3.000000000000000000
+            Margins.Top = 3.000000000000000000
+            Margins.Right = 3.000000000000000000
+            Margins.Bottom = 3.000000000000000000
+            Size.Width = 537.000000000000000000
+            Size.Height = 502.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 1
+            Viewport.Width = 533.000000000000000000
+            Viewport.Height = 498.000000000000000000
+          end
+        end
+        object tabResults: TTabItem
+          CustomIcon = <
+            item
+            end>
+          IsSelected = True
+          Size.Width = 75.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'tabResults'
+          object layHeaders: TLayout
+            Align = MostTop
+            Size.Width = 543.000000000000000000
+            Size.Height = 233.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 1
+            object Text4: TText
+              Align = MostTop
+              Size.Width = 543.000000000000000000
+              Size.Height = 24.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Headers'
+            end
+            object memHeaders: TMemo
+              Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+              DataDetectorTypes = []
+              ReadOnly = True
+              StyledSettings = [Style, FontColor]
+              TextSettings.Font.Family = 'Consolas'
+              TextSettings.Font.Size = 11.000000000000000000
+              Align = Client
+              Size.Width = 543.000000000000000000
+              Size.Height = 209.000000000000000000
+              Size.PlatformDefault = False
+              TabOrder = 1
+              Viewport.Width = 539.000000000000000000
+              Viewport.Height = 205.000000000000000000
+            end
+          end
+          object layContent: TLayout
+            Align = Client
+            Size.Width = 543.000000000000000000
+            Size.Height = 325.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+            object Text5: TText
+              Align = MostTop
+              Size.Width = 543.000000000000000000
+              Size.Height = 24.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Content'
+            end
+            object memContent: TMemo
+              Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+              DataDetectorTypes = []
+              ReadOnly = True
+              StyledSettings = [Style, FontColor]
+              TextSettings.Font.Family = 'Consolas'
+              TextSettings.Font.Size = 11.000000000000000000
+              Align = Client
+              Size.Width = 543.000000000000000000
+              Size.Height = 301.000000000000000000
+              Size.PlatformDefault = False
+              TabOrder = 1
+              Viewport.Width = 539.000000000000000000
+              Viewport.Height = 297.000000000000000000
+            end
+          end
+        end
+      end
+    end
+  end
+  object OpenDialog1: TOpenDialog
+    DefaultExt = '.pem'
+    Filter = 'PEM files (*.pem)|*.pem|All Files (*.*)|*.*'
+    Title = 'Select PEM File'
+    Left = 147
+    Top = 108
+  end
+  object ActionList1: TActionList
+    Left = 220
+    Top = 109
+    object actOpenPEMFile: TAction
+      Text = '...'
+      OnExecute = actOpenPEMFileExecute
+    end
+  end
+end

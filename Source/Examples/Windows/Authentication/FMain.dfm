@@ -66,7 +66,7 @@ object FormMain: TFormMain
     end
     object EditOAuthScope: TEdit
       Left = 16
-      Top = 142
+      Top = 145
       Width = 345
       Height = 21
       TabOrder = 2

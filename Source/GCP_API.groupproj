@@ -12,6 +12,9 @@
         <Projects Include="Examples\Windows\Authentication\GCP_API_WindowsAuthenticationDemo.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="Examples\MegaDemo\GCPMegaDemo.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -47,14 +50,23 @@
     <Target Name="GCP_API_WindowsAuthenticationDemo:Make">
         <MSBuild Projects="Examples\Windows\Authentication\GCP_API_WindowsAuthenticationDemo.dproj" Targets="Make"/>
     </Target>
+    <Target Name="GCPMegaDemo">
+        <MSBuild Projects="Examples\MegaDemo\GCPMegaDemo.dproj"/>
+    </Target>
+    <Target Name="GCPMegaDemo:Clean">
+        <MSBuild Projects="Examples\MegaDemo\GCPMegaDemo.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="GCPMegaDemo:Make">
+        <MSBuild Projects="Examples\MegaDemo\GCPMegaDemo.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="GCP_API_R;GCP_API_D;GCP_API_WindowsAuthenticationDemo"/>
+        <CallTarget Targets="GCP_API_R;GCP_API_D;GCP_API_WindowsAuthenticationDemo;GCPMegaDemo"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="GCP_API_R:Clean;GCP_API_D:Clean;GCP_API_WindowsAuthenticationDemo:Clean"/>
+        <CallTarget Targets="GCP_API_R:Clean;GCP_API_D:Clean;GCP_API_WindowsAuthenticationDemo:Clean;GCPMegaDemo:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="GCP_API_R:Make;GCP_API_D:Make;GCP_API_WindowsAuthenticationDemo:Make"/>
+        <CallTarget Targets="GCP_API_R:Make;GCP_API_D:Make;GCP_API_WindowsAuthenticationDemo:Make;GCPMegaDemo:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
