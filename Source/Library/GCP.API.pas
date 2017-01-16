@@ -1,4 +1,4 @@
-unit Google.API;
+unit GCP.API;
 
 { Google Cloud Platform APIs for Google Compute Engine instances }
 

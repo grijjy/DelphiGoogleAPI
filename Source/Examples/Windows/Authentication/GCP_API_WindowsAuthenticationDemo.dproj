@@ -3,7 +3,7 @@
         <ProjectGuid>{8FB06219-810F-4EC8-B220-03342D4910A6}</ProjectGuid>
         <ProjectVersion>18.2</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
-        <MainSource>DelphiGoogleAPIExample.dpr</MainSource>
+        <MainSource>GCP_API_WindowsAuthenticationDemo.dpr</MainSource>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
@@ -51,10 +51,10 @@
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
         <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
-        <SanitizedProjectName>DelphiGoogleAPIExample</SanitizedProjectName>
+        <SanitizedProjectName>GCP_API_WindowsAuthenticationDemo</SanitizedProjectName>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
-        <DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
-        <DCC_ExeOutput>.\Bin</DCC_ExeOutput>
+        <DCC_DcuOutput>..\..\..\..\DCU\GCP_API\$(Config)\$(Platform)</DCC_DcuOutput>
+        <DCC_ExeOutput>..\..\..\..\BIN\GCP_API\$(Config)\$(Platform)</DCC_ExeOutput>
         <DCC_E>false</DCC_E>
         <DCC_N>false</DCC_N>
         <DCC_S>false</DCC_S>
@@ -82,8 +82,9 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <DCC_DcuOutput>..\..\..\..\..\DCU\GCP_API\$(Config)\$(Platform)</DCC_DcuOutput>
+        <DCC_ExeOutput>..\..\..\..\..\BIN\GCP_API\$(Config)\$(Platform)</DCC_ExeOutput>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_Locale>1033</VerInfo_Locale>
         <AppEnableHighDPI>true</AppEnableHighDPI>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
@@ -106,21 +107,21 @@
             <Form>FormMain</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="..\Google.API.pas"/>
-        <DCCReference Include="..\..\GrijjyFoundation\Grijjy.Http.pas"/>
-        <DCCReference Include="..\..\GrijjyFoundation\Grijjy.JWT.pas"/>
-        <DCCReference Include="..\..\GrijjyFoundation\Grijjy.Bson.pas"/>
-        <DCCReference Include="..\..\GrijjyFoundation\Grijjy.BinaryCoding.pas"/>
-        <DCCReference Include="..\..\GrijjyFoundation\Grijjy.SocketPool.Win.pas"/>
-        <DCCReference Include="..\..\GrijjyFoundation\Grijjy.Uri.pas"/>
-        <DCCReference Include="..\..\GrijjyFoundation\Grijjy.Collections.pas"/>
-        <DCCReference Include="..\..\GrijjyFoundation\Grijjy.MemoryPool.pas"/>
-        <DCCReference Include="..\..\GrijjyFoundation\Grijjy.OpenSSL.pas"/>
-        <DCCReference Include="..\..\GrijjyFoundation\Grijjy.Winsock2.pas"/>
-        <DCCReference Include="..\..\GrijjyFoundation\Grijjy.OpenSSL.API.pas"/>
-        <DCCReference Include="..\..\GrijjyFoundation\Grijjy.Bson.IO.pas"/>
-        <DCCReference Include="..\..\GrijjyFoundation\Grijjy.DateUtils.pas"/>
-        <DCCReference Include="..\..\GrijjyFoundation\Grijjy.SysUtils.pas"/>
+        <DCCReference Include="..\..\..\..\..\GrijjyFoundation\Grijjy.Http.pas"/>
+        <DCCReference Include="..\..\..\..\..\GrijjyFoundation\Grijjy.JWT.pas"/>
+        <DCCReference Include="..\..\..\..\..\GrijjyFoundation\Grijjy.Bson.pas"/>
+        <DCCReference Include="..\..\..\..\..\GrijjyFoundation\Grijjy.BinaryCoding.pas"/>
+        <DCCReference Include="..\..\..\..\..\GrijjyFoundation\Grijjy.SocketPool.Win.pas"/>
+        <DCCReference Include="..\..\..\..\..\GrijjyFoundation\Grijjy.Uri.pas"/>
+        <DCCReference Include="..\..\..\..\..\GrijjyFoundation\Grijjy.Collections.pas"/>
+        <DCCReference Include="..\..\..\..\..\GrijjyFoundation\Grijjy.MemoryPool.pas"/>
+        <DCCReference Include="..\..\..\..\..\GrijjyFoundation\Grijjy.OpenSSL.pas"/>
+        <DCCReference Include="..\..\..\..\..\GrijjyFoundation\Grijjy.Winsock2.pas"/>
+        <DCCReference Include="..\..\..\..\..\GrijjyFoundation\Grijjy.OpenSSL.API.pas"/>
+        <DCCReference Include="..\..\..\..\..\GrijjyFoundation\Grijjy.Bson.IO.pas"/>
+        <DCCReference Include="..\..\..\..\..\GrijjyFoundation\Grijjy.DateUtils.pas"/>
+        <DCCReference Include="..\..\..\..\..\GrijjyFoundation\Grijjy.SysUtils.pas"/>
+        <DCCReference Include="..\..\..\Library\GCP.API.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -139,17 +140,19 @@
         <BorlandProject>
             <Delphi.Personality>
                 <Source>
-                    <Source Name="MainSource">DelphiGoogleAPIExample.dpr</Source>
+                    <Source Name="MainSource">GCP_API_WindowsAuthenticationDemo.dpr</Source>
                 </Source>
                 <Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k250.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp250.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k240.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp240.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Program Files (x86)\FastReport 5 VCL Professional\LibD24\dclfrxIBX24.bpl">FastReport 5.0 IBX Components</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Program Files (x86)\FastReport 5 VCL Professional\LibD24\dclfsIBX24.bpl">FastScript 1.9 IBX Components</Excluded_Packages>
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="Bin\DelphiGoogleAPIExample.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="..\..\..\..\BIN\GCP_API\Debug\Win32\GCP_API_WindowsAuthenticationDemo.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
-                        <RemoteName>DelphiGoogleAPIExample.exe</RemoteName>
+                        <RemoteName>GCP_API_WindowsAuthenticationDemo.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -580,3 +583,11 @@
     <Import Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj" Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')"/>
     <Import Project="$(MSBuildProjectName).deployproj" Condition="Exists('$(MSBuildProjectName).deployproj')"/>
 </Project>
+
+<!-- EurekaLog First Line
+[Exception Log]
+EurekaLog Version=7007
+Activate=0
+DeleteMapAfterCompile=0
+Encrypt Password=""
+EurekaLog Last Line -->

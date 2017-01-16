@@ -14,7 +14,7 @@ uses
   Vcl.Forms,
   Vcl.Dialogs,
   Vcl.StdCtrls,
-  Google.API;
+  GCP.API;
 
 type
   TFormMain = class(TForm)
