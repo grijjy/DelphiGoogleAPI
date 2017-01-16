@@ -23,7 +23,10 @@ uses
   GCP.API.Service.Authentication in '..\..\Library\GCP.API.Service.Authentication.pas',
   GCP.API.Interfaces in '..\..\Library\GCP.API.Interfaces.pas',
   GCP.API.Types in '..\..\Library\GCP.API.Types.pas',
-  GCP.API.Service in '..\..\Library\GCP.API.Service.pas';
+  GCP.API.Service in '..\..\Library\GCP.API.Service.pas',
+  GCP.API.Factory in '..\..\Library\GCP.API.Factory.pas',
+  GCP.API.Logger in '..\..\Library\GCP.API.Logger.pas',
+  GCP.API.Classes in '..\..\Library\GCP.API.Classes.pas';
 
 {$R *.res}
 

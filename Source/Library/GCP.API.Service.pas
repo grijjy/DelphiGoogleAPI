@@ -6,22 +6,10 @@ uses
   GCP.API;
 
 type
-  TgoGoogleService = class(TInterfacedObject)
-  strict private
-    FGoogleAPI: TgoGoogle;
-  protected
-    property GoogleAPI: TgoGoogle read FGoogleAPI;
-  public
-    constructor Create(const GoogleAPI: TgoGoogle); virtual;
+  TGCPService = class(TInterfacedObject)
   end;
+  TGCPServiceClass = class of TGCPService;
 
 implementation
-
-{ TgoGoogleService }
-
-constructor TgoGoogleService.Create(const GoogleAPI: TgoGoogle);
-begin
-  FGoogleAPI := GoogleAPI;
-end;
 
 end.

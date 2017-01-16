@@ -5,36 +5,45 @@ unit GCP.API;
 interface
 
 uses
-  SysUtils, SyncObjs,
+  SysUtils, SyncObjs, Classes,
 
   Grijjy.Http,
 
   GCP.API.Interfaces;
 
 type
-  TgoGoogle = class
+  TGCPAPI = class(TInterfacedObject, IGoogleAPI)
   private
     { Google Cloud Account }
     FOAuthScope: String;
     FServiceAccount: String;
     FPrivateKey: String;
     FAccessTokenCS: TCriticalSection;
+    FLastTokenTicks: Cardinal;
+    FTokenExpiresTicks: Cardinal;
+    FAccessToken: String;
 
-    FGCPAuthenticationAPI: IGCPAuthenticationService;
+    FLogger: ILogger;
+    FAuthenticationService: IAuthenticationService;
   protected
-    function ClaimSet(const AScope: String; const ADateTime: TDateTime): String;
     function GetAccessToken: String;
     procedure SetOAuthScope(const AValue: String);
     procedure SetPrivateKey(const AValue: String);
     procedure SetServiceAccount(const AValue: String);
-  public
-    constructor Create;
-    destructor Destroy; override;
-  public
+
+    function RequestInternal(const AUrl, ARequest: String; out AResponseHeaders, AResponseContent: String;
+      const ARecvTimeout: Integer = DEFAULT_TIMEOUT_RECV): Integer;
+
     { Post a request to the Google Cloud APIs }
     function Post(const AUrl, ARequest: String; out AResponseHeaders, AResponseContent: String;
       const ARecvTimeout: Integer = DEFAULT_TIMEOUT_RECV): Integer;
+
+    function Logger: ILogger;
+    function AuthenticationService: IAuthenticationService;
   public
+    constructor Create(Logger: ILogger; AuthenticationService: IAuthenticationService);
+    destructor Destroy; override;
+
     { Returns the current access token }
     property AccessToken: String read GetAccessToken;
 
@@ -50,71 +59,94 @@ type
 
 implementation
 
+const
+  DefaultTokenExpireSeconds = 3600;
+
 { TGoogle }
 
-constructor TgoGoogle.Create;
+constructor TGCPAPI.Create(Logger: ILogger;
+  AuthenticationService: IAuthenticationService);
 begin
   FAccessTokenCS := TCriticalSection.Create;
+  FTokenExpiresTicks := 0;
 
-  FLastToken := -1;
-  FTokenExpiresInSec := 0;
+  FLogger := Logger;
+  FAuthenticationService := AuthenticationService;
 end;
 
-destructor TgoGoogle.Destroy;
+destructor TGCPAPI.Destroy;
 begin
   FreeAndNil(FAccessTokenCS);
 
   inherited;
 end;
 
-procedure TgoGoogle.SetOAuthScope(const AValue: String);
+procedure TGCPAPI.SetOAuthScope(const AValue: String);
 begin
-  FOAuthScope := AValue;
-  FLastToken := -1; { create new access token on next request }
+  if FOAuthScope <> AValue then
+  begin
+    FOAuthScope := AValue;
+
+    FLastTokenTicks := 0;
+  end;
 end;
 
-procedure TgoGoogle.SetServiceAccount(const AValue: String);
+procedure TGCPAPI.SetServiceAccount(const AValue: String);
 begin
-  FServiceAccount := AValue;
-  FLastToken := -1; { create new access token on next request }
+  if FServiceAccount <> AValue then
+  begin
+    FServiceAccount := AValue;
+
+    FLastTokenTicks := 0;
+  end;
 end;
 
-procedure TgoGoogle.SetPrivateKey(const AValue: String);
+procedure TGCPAPI.SetPrivateKey(const AValue: String);
 begin
-  FPrivateKey := AValue;
-  FLastToken := -1; { create new access token on next request }
+  if FPrivateKey <> AValue then
+  begin
+    FPrivateKey := AValue;
+
+    FLastTokenTicks := 0;
+  end;
 end;
 
 { See: https://developers.google.com/identity/protocols/OAuth2ServiceAccount#authorizingrequests for more details }
-function TgoGoogle.ClaimSet(const AScope: String; const ADateTime: TDateTime): String;
-var
-  Doc: TgoBsonDocument;
+function TGCPAPI.AuthenticationService: IAuthenticationService;
 begin
-  Doc := TgoBsonDocument.Create;
-  Doc['iss'] := FServiceAccount;
-  Doc['scope'] := AScope;
-  Doc['aud'] := 'https://www.googleapis.com/oauth2/v4/token';
-  Doc['exp'] := DateTimeToUnix(TTimeZone.Local.ToUniversalTime(IncSecond(ADateTime, 3600))); { expires in one hour }
-  Doc['iat'] := DateTimeToUnix(TTimeZone.Local.ToUniversalTime(ADateTime));
-  Result := Doc.ToJson;
+  Result :=  FAuthenticationService;
 end;
 
-function TgoGoogle.GetAccessToken: String;
-var
-  HTTP: TgoHTTPClient;
-  Response: String;
-  Doc: TgoBsonDocument;
-  JWT: String;
+function TGCPAPI.GetAccessToken: String;
 begin
   FAccessTokenCS.Enter;
   try
-    Result := FAccessToken;
+    if (FLastTokenTicks = 0) or
+       (TThread.GetTickCount >= FLastTokenTicks) then
+    begin
+      FLastTokenTicks := TThread.GetTickCount;
+
+      FAccessToken := AuthenticationService.Authenticate(
+        FServiceAccount,
+        FOAuthScope,
+        FPrivateKey,
+        DefaultTokenExpireSeconds);
+    end
+    else
+    begin
+      Result := FAccessToken;
+    end;
   finally
     FAccessTokenCS.Leave;
   end;
 end;
 
-function TgoGoogle.Post(const AUrl, ARequest: String; out AResponseHeaders, AResponseContent: String;
+function TGCPAPI.Logger: ILogger;
+begin
+  Result := FLogger;
+end;
+
+function TGCPAPI.Post(const AUrl, ARequest: String; out AResponseHeaders, AResponseContent: String;
   const ARecvTimeout: Integer): Integer;
 var
   HTTP: TgoHTTPClient;
@@ -129,6 +161,13 @@ begin
   finally
     HTTP.Free;
   end;
+end;
+
+function TGCPAPI.RequestInternal(const AUrl, ARequest: String;
+  out AResponseHeaders, AResponseContent: String;
+  const ARecvTimeout: Integer): Integer;
+begin
+
 end;
 
 end.
