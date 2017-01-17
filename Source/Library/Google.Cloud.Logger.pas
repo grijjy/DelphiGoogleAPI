@@ -1,13 +1,13 @@
-unit GCP.API.Logger;
+unit Google.Cloud.Logger;
 
 interface
 
 uses
-  GCP.API.Interfaces,
-  GCP.API.Types;
+  Google.Cloud.Interfaces,
+  Google.Cloud.Types;
 
 type
-  TGCPLogger = class(TInterfacedObject, ILogger)
+  TLogger = class(TInterfacedObject, ILogger)
   protected
     procedure Log(const Text: String; const Severity: TLogSeverity = TLogSeverity.Info; const Timestamp: TDateTime = 0); overload; virtual;
     procedure Log(const Text: String; const Args: Array of const; const Severity: TLogSeverity = TLogSeverity.Info; const Timestamp: TDateTime = 0); overload; virtual;
@@ -15,15 +15,15 @@ type
 
 implementation
 
-{ TGCPLogger }
+{ TGoogleCloudLogger }
 
-procedure TGCPLogger.Log(const Text: String; const Severity: TLogSeverity;
+procedure TLogger.Log(const Text: String; const Severity: TLogSeverity;
   const Timestamp: TDateTime);
 begin
   // Implement in descendant class
 end;
 
-procedure TGCPLogger.Log(const Text: String; const Args: array of const;
+procedure TLogger.Log(const Text: String; const Args: array of const;
   const Severity: TLogSeverity; const Timestamp: TDateTime);
 begin
   // Implement in descendant class

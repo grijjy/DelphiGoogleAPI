@@ -1,4 +1,4 @@
-program GCP_API_WindowsAuthenticationDemo;
+program GoogleCloud_API_WindowsAuthenticationDemo;
 
 uses
   Vcl.Forms,
@@ -17,7 +17,7 @@ uses
   Grijjy.Bson.IO in '..\..\..\..\..\GrijjyFoundation\Grijjy.Bson.IO.pas',
   Grijjy.DateUtils in '..\..\..\..\..\GrijjyFoundation\Grijjy.DateUtils.pas',
   Grijjy.SysUtils in '..\..\..\..\..\GrijjyFoundation\Grijjy.SysUtils.pas',
-  GCP.API in '..\..\..\Library\GCP.API.pas';
+  Google.Cloud in '..\..\..\Library\Google.Cloud.pas';
 
 {$R *.res}
 

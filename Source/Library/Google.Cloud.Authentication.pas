@@ -1,4 +1,4 @@
-unit GCP.API.Service.Authentication;
+unit Google.Cloud.Authentication;
 
 interface
 
@@ -9,11 +9,11 @@ uses
   Grijjy.JWT,
   Grijjy.Bson,
 
-  GCP.API.Service,
-  GCP.API.Interfaces;
+  Google.Cloud.Service,
+  Google.Cloud.Interfaces;
 
 type
-  TAuthenticationService = class(TGCPService, IAuthenticationService)
+  TAuthenticationService = class(TGoogleCloudService, IGoogleCloudAuthentication)
   private
     FTokenExpiresInSec: Int64;
     FLastToken: String;

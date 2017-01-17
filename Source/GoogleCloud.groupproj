@@ -1,0 +1,60 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{0B1928BF-C91A-422C-B353-9AA829CCB529}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Packages\Delphi10_1\GoogleCloud_R.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Packages\Delphi10_1\GoogleCloud_D.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Examples\MegaDemo\GoogleCloudDemo.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="GoogleCloud_R">
+        <MSBuild Projects="Packages\Delphi10_1\GoogleCloud_R.dproj"/>
+    </Target>
+    <Target Name="GoogleCloud_R:Clean">
+        <MSBuild Projects="Packages\Delphi10_1\GoogleCloud_R.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="GoogleCloud_R:Make">
+        <MSBuild Projects="Packages\Delphi10_1\GoogleCloud_R.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="GoogleCloud_D">
+        <MSBuild Projects="Packages\Delphi10_1\GoogleCloud_D.dproj"/>
+    </Target>
+    <Target Name="GoogleCloud_D:Clean">
+        <MSBuild Projects="Packages\Delphi10_1\GoogleCloud_D.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="GoogleCloud_D:Make">
+        <MSBuild Projects="Packages\Delphi10_1\GoogleCloud_D.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="GoogleCloudDemo">
+        <MSBuild Projects="Examples\MegaDemo\GoogleCloudDemo.dproj"/>
+    </Target>
+    <Target Name="GoogleCloudDemo:Clean">
+        <MSBuild Projects="Examples\MegaDemo\GoogleCloudDemo.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="GoogleCloudDemo:Make">
+        <MSBuild Projects="Examples\MegaDemo\GoogleCloudDemo.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="GoogleCloud_R;GoogleCloud_D;GoogleCloudDemo"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="GoogleCloud_R:Clean;GoogleCloud_D:Clean;GoogleCloudDemo:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="GoogleCloud_R:Make;GoogleCloud_D:Make;GoogleCloudDemo:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

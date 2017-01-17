@@ -1,9 +1,8 @@
-program GCPMegaDemo;
+program GoogleCloudDemo;
 
 uses
   System.StartUpCopy,
   FMX.Forms,
-  GCP.Demo.View.Main in 'GCP.Demo.View.Main.pas' {frmGCPMegaDemo},
   Grijjy.Http in '..\..\..\..\GrijjyFoundation\Grijjy.Http.pas',
   Grijjy.JWT in '..\..\..\..\GrijjyFoundation\Grijjy.JWT.pas',
   Grijjy.Bson in '..\..\..\..\GrijjyFoundation\Grijjy.Bson.pas',
@@ -18,15 +17,16 @@ uses
   Grijjy.Bson.IO in '..\..\..\..\GrijjyFoundation\Grijjy.Bson.IO.pas',
   Grijjy.DateUtils in '..\..\..\..\GrijjyFoundation\Grijjy.DateUtils.pas',
   Grijjy.SysUtils in '..\..\..\..\GrijjyFoundation\Grijjy.SysUtils.pas',
-  GCP.API.Service.Speech in '..\..\Library\GCP.API.Service.Speech.pas',
-  GCP.API in '..\..\Library\GCP.API.pas',
-  GCP.API.Service.Authentication in '..\..\Library\GCP.API.Service.Authentication.pas',
-  GCP.API.Interfaces in '..\..\Library\GCP.API.Interfaces.pas',
-  GCP.API.Types in '..\..\Library\GCP.API.Types.pas',
-  GCP.API.Service in '..\..\Library\GCP.API.Service.pas',
-  GCP.API.Factory in '..\..\Library\GCP.API.Factory.pas',
-  GCP.API.Logger in '..\..\Library\GCP.API.Logger.pas',
-  GCP.API.Classes in '..\..\Library\GCP.API.Classes.pas';
+  Google.Cloud.Speech in '..\..\Library\Google.Cloud.Speech.pas',
+  Google.Cloud in '..\..\Library\Google.Cloud.pas',
+  Google.Cloud.Authentication in '..\..\Library\Google.Cloud.Authentication.pas',
+  Google.Cloud.Interfaces in '..\..\Library\Google.Cloud.Interfaces.pas',
+  Google.Cloud.Types in '..\..\Library\Google.Cloud.Types.pas',
+  Google.Cloud.Service in '..\..\Library\Google.Cloud.Service.pas',
+  Google.Cloud.Factory in '..\..\Library\Google.Cloud.Factory.pas',
+  Google.Cloud.Logger in '..\..\Library\Google.Cloud.Logger.pas',
+  Google.Cloud.Classes in '..\..\Library\Google.Cloud.Classes.pas',
+  Google.Cloud.View.Main in 'Google.Cloud.View.Main.pas';
 
 {$R *.res}
 

@@ -14,7 +14,7 @@ uses
   Vcl.Forms,
   Vcl.Dialogs,
   Vcl.StdCtrls,
-  GCP.API;
+  Google.Cloud;
 
 type
   TFormMain = class(TForm)
@@ -60,10 +60,10 @@ end;
 
 procedure TFormMain.ButtonPostClick(Sender: TObject);
 var
-  Google: TGCPAPI;
+  Google: TGoogleCloudAPI;
   ResponseHeaders, ResponseContent: String;
 begin
-  Google := TGCPAPI.Create;
+  Google := TGoogleCloudAPI.Create;
   try
     Google.OAuthScope := EditOAuthScope.Text;
     Google.ServiceAccount := EditServiceAccount.Text;

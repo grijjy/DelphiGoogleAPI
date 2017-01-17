@@ -1,4 +1,4 @@
-package GCP_API_R;
+package GoogleCloud_R;
 
 {$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
@@ -31,6 +31,6 @@ requires
   rtl;
 
 contains
-  GCP.API in '..\..\Library\GCP.API.pas';
+  Google.Cloud in '..\..\Library\Google.Cloud.pas';
 
 end.
