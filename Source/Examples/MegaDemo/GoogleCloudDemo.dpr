@@ -31,6 +31,10 @@ uses
 {$R *.res}
 
 begin
+  {$IFDEF DEBUG}
+  ReportMemoryLeaksOnShutdown := True;
+  {$ENDIF}
+
   Application.Initialize;
   Application.CreateForm(TfrmGCPMegaDemo, frmGCPMegaDemo);
   Application.Run;

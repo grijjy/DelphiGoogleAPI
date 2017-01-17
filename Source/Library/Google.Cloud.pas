@@ -22,17 +22,17 @@ type
     FTokenExpiresTicks: Cardinal;
     FAccessToken: String;
 
+    // Internal Services
     FLogger: ILogger;
+
+    // Authentication
     FAuthenticationService: IGoogleCloudAuthentication;
+
+    // Google Cloud Services
     FSpeechService: IGoogleCloudSpeech;
 
-    function RequestInternal(const AUrl, ARequest: String; out AResponseHeaders, AResponseContent: String;
-      const ARecvTimeout: Integer = DEFAULT_TIMEOUT_RECV): Integer;
     function GetAccessToken: String;
   protected
-    function Post(const AUrl, ARequest: String; out AResponseHeaders, AResponseContent: String;
-      const ARecvTimeout: Integer = DEFAULT_TIMEOUT_RECV): Integer;
-
     property AccessToken: String read GetAccessToken;
   protected
     // ILogger
@@ -52,6 +52,9 @@ type
   end;
 
 implementation
+
+uses
+  Google.Cloud.Classes;
 
 const
   DefaultTokenExpireSeconds = 3600;
@@ -118,36 +121,14 @@ begin
         FOAuthScope,
         TFile.ReadAllText(FPrivateKeyFilename),
         DefaultTokenExpireSeconds);
+
+      FLastTokenTicks := TThread.GetTickCount + (DefaultTokenExpireSeconds * 1000) - 5000;
     end;
 
     Result := FAccessToken;
   finally
     FAccessTokenCS.Leave;
   end;
-end;
-
-function TGoogleCloud.Post(const AUrl, ARequest: String; out AResponseHeaders, AResponseContent: String;
-  const ARecvTimeout: Integer): Integer;
-var
-  HTTP: TgoHTTPClient;
-begin
-  HTTP := TgoHTTPClient.Create;
-  try
-    HTTP.RequestBody := ARequest;
-    HTTP.Authorization := 'Bearer ' + AccessToken;
-    AResponseContent := HTTP.Post(AUrl, ARecvTimeout);
-    AResponseHeaders := HTTP.ResponseHeaders.Text;
-    Result := HTTP.ResponseStatusCode;
-  finally
-    HTTP.Free;
-  end;
-end;
-
-function TGoogleCloud.RequestInternal(const AUrl, ARequest: String;
-  out AResponseHeaders, AResponseContent: String;
-  const ARecvTimeout: Integer): Integer;
-begin
-
 end;
 
 end.

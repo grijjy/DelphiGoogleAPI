@@ -36,13 +36,13 @@ uses
 { TSpeechService }
 
 function TSpeechService.SyncRecognize(
-      const SpeechEncoding: String;
-      const SampleRate: TSpeechSampleRate;
-      const AudioURI: String;
-      const LanguageCode: String = TLanguageCode.en_US;
-      const MaxAlternatives: Integer = 1;
-      const ProfanityFilter: Boolean = False;
-      const SpeechContext: TJSONString = ''): ISpeechSyncRecognizeResponse;
+  const SpeechEncoding: String;
+  const SampleRate: TSpeechSampleRate;
+  const AudioURI: String;
+  const LanguageCode: String = TLanguageCode.en_US;
+  const MaxAlternatives: Integer = 1;
+  const ProfanityFilter: Boolean = False;
+  const SpeechContext: TJSONString = ''): ISpeechSyncRecognizeResponse;
 begin
   Result := TSpeechSyncRecognizeResponse.Create;
 

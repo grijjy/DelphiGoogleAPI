@@ -10,6 +10,7 @@ uses
 
 type
   EGoogleCloudException = class(Exception);
+  EGoogleCloudInvalidCredentials = class(EGoogleCloudException);
   EGoogleCloudAlreadyRegistered = class(EGoogleCloudException);
 
   THTTPResponse = class(TInterfacedObject, IHTTPResponse)

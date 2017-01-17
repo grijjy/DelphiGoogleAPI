@@ -7,6 +7,14 @@ type
   THTTPResponseCode = Integer;
   TJSONString = String;
 
+  THTTPRequestType = (
+    GET,
+    POST,
+    PUT,
+    DELETE,
+    OPTIONS
+  );
+
   TLogSeverity = (
     Default,
     Debug,

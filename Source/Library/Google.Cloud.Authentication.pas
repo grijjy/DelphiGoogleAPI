@@ -22,7 +22,7 @@ type
   protected
     function Authenticate(const ServiceAccount, OAuthScope, PrivateKey: String; const ExpireSeconds: Cardinal): String;
   public
-    constructor Create;
+    constructor Create; override;
   end;
 
 implementation
