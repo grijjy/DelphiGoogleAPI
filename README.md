@@ -148,6 +148,6 @@ If the above Post succeeds, then `StatusCode` will return `200 (OK)` and `Conten
 
 You can find an [example Delphi application](https://github.com/grijjy/DelphiGoogleAPI) in our GitHub repository.
 
-#License
+# License
 
 TgoGoogle and DelphiGoogleAPI is licensed under the Simplified BSD License. See License.txt for details.
