@@ -3,7 +3,7 @@ unit Google.Cloud.Service;
 interface
 
 uses
-  SysUtils,
+  SysUtils, System.Diagnostics,
 
   Grijjy.Http,
 
@@ -148,7 +148,12 @@ function TGoogleCloudService.Request(const RequestType: THTTPRequestType;
 var
   HTTP: TgoHTTPClient;
   URL: String;
+  StopWatch: TStopwatch;
 begin
+  Stopwatch := TStopwatch.Create;
+  StopWatch.Reset;
+  Stopwatch.Start;
+
   HTTP := TgoHTTPClient.Create;
   try
     HTTP.RequestBody := Contents;
@@ -170,6 +175,8 @@ begin
     HTTPResponse.HTTPResponseCode := HTTP.ResponseStatusCode;
 
     Result := HTTP.ResponseStatusCode;
+
+    HTTPResponse.ResponseTime := StopWatch.Elapsed;
   finally
     FreeAndNil(HTTP);
   end;

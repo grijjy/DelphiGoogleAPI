@@ -8,6 +8,7 @@ uses
   SysUtils, SyncObjs, Classes, IOUtils,
 
   Grijjy.Http,
+  Grijjy.Bson,
 
   Google.Cloud.Interfaces;
 
@@ -17,10 +18,7 @@ type
     FOAuthScope: String;
     FServiceAccount: String;
     FPrivateKeyFilename: String;
-    FAccessTokenCS: TCriticalSection;
-    FLastTokenTicks: Cardinal;
-    FTokenExpiresTicks: Cardinal;
-    FAccessToken: String;
+    FPrivateKey: String;
 
     // Internal Services
     FLogger: ILogger;
@@ -31,8 +29,15 @@ type
     // Google Cloud Services
     FSpeechService: IGoogleCloudSpeech;
 
+    procedure SaveSettings(const Filename: String);
+    procedure LoadSettings(const Filename: String);
+    function GetServiceAccount: String;
+    function GetOAuthScope: String;
+    function GetPrivateKeyFilename: String;
     function GetAccessToken: String;
   protected
+    procedure InitializeGoogleCloud(const ServiceAccount, OAuthScope, PrivateKeyFilename: String);
+
     property AccessToken: String read GetAccessToken;
   protected
     // ILogger
@@ -47,8 +52,6 @@ type
       AuthenticationService: IGoogleCloudAuthentication;
       SpeechService: IGoogleCloudSpeech);
     destructor Destroy; override;
-
-    procedure SetAccountProperties(const ServiceAccount, OAuthScope, PrivateKeyFilename: String);
   end;
 
 implementation
@@ -66,9 +69,6 @@ constructor TGoogleCloud.Create(
   AuthenticationService: IGoogleCloudAuthentication;
   SpeechService: IGoogleCloudSpeech);
 begin
-  FAccessTokenCS := TCriticalSection.Create;
-  FTokenExpiresTicks := 0;
-
   FLogger := Logger;
   FAuthenticationService := AuthenticationService;
   FSpeechService := SpeechService;
@@ -76,12 +76,27 @@ end;
 
 destructor TGoogleCloud.Destroy;
 begin
-  FreeAndNil(FAccessTokenCS);
 
   inherited;
 end;
 
-procedure TGoogleCloud.SetAccountProperties(const ServiceAccount, OAuthScope,
+procedure TGoogleCloud.SaveSettings(const Filename: String);
+begin
+  ForceDirectories(ExtractFileDir(Filename));
+
+  TgoBsonDocument.Create.
+    Add('serviceAccount', FServiceAccount).
+    Add('oAuthScope', FOAuthScope).
+    Add('privateKeyFilename', FPrivateKeyFilename).
+    SaveToJsonFile(Filename);
+end;
+
+function TGoogleCloud.GetServiceAccount: String;
+begin
+  Result := FServiceAccount;
+end;
+
+procedure TGoogleCloud.InitializeGoogleCloud(const ServiceAccount, OAuthScope,
   PrivateKeyFilename: String);
 begin
   if (ServiceAccount <> FServiceAccount) or
@@ -91,8 +106,9 @@ begin
     FServiceAccount := ServiceAccount;
     FOAuthScope := OAuthScope;
     FPrivateKeyFilename := PrivateKeyFilename;
+    FPrivateKey := TFile.ReadAllText(FPrivateKeyFilename);
 
-    FLastTokenTicks := 0;
+    Authentication.ResetAccessToken;
   end;
 end;
 
@@ -109,26 +125,34 @@ end;
 
 function TGoogleCloud.GetAccessToken: String;
 begin
-  FAccessTokenCS.Enter;
-  try
-    if (FLastTokenTicks = 0) or
-       (TThread.GetTickCount >= FLastTokenTicks) then
-    begin
-      FLastTokenTicks := TThread.GetTickCount;
+  Result := Authentication.GetAccessToken(
+    FServiceAccount,
+    FOAuthScope,
+    FPrivateKey,
+    DefaultTokenExpireSeconds);
+end;
 
-      FAccessToken := Authentication.Authenticate(
-        FServiceAccount,
-        FOAuthScope,
-        TFile.ReadAllText(FPrivateKeyFilename),
-        DefaultTokenExpireSeconds);
+procedure TGoogleCloud.LoadSettings(const Filename: String);
+var
+  Doc: TgoBsonDocument;
+begin
+  Doc := TgoBsonDocument.Create.LoadFromJsonFile(Filename);
 
-      FLastTokenTicks := TThread.GetTickCount + (DefaultTokenExpireSeconds * 1000) - 5000;
-    end;
+  InitializeGoogleCloud(
+    Doc['serviceAccount'],
+    Doc['oAuthScope'],
+    Doc['privateKeyFilename']
+  );
+end;
 
-    Result := FAccessToken;
-  finally
-    FAccessTokenCS.Leave;
-  end;
+function TGoogleCloud.GetOAuthScope: String;
+begin
+  Result := FOAuthScope;
+end;
+
+function TGoogleCloud.GetPrivateKeyFilename: String;
+begin
+  Result := FPrivateKeyFilename;
 end;
 
 end.

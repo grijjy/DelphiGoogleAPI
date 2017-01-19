@@ -9,6 +9,7 @@ object frmGCPMegaDemo: TfrmGCPMegaDemo
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   OnResize = FormResize
   DesignerMasterStyle = 0
   object gpAccountProperties: TGroupBox
@@ -36,15 +37,18 @@ object frmGCPMegaDemo: TfrmGCPMegaDemo
         Size.Height = 19.000000000000000000
         Size.PlatformDefault = False
         Text = 'GCP Service Account'
+        TextSettings.Font.Size = 14.000000000000000000
         TextSettings.HorzAlign = Leading
       end
       object edtServiceAccount: TEdit
         Touch.InteractiveGestures = [LongTap, DoubleTap]
         Align = Client
         TabOrder = 1
+        TextSettings.Font.Size = 14.000000000000000000
         Size.Width = 321.000000000000000000
         Size.Height = 23.000000000000000000
         Size.PlatformDefault = False
+        StyledSettings = [Family, Style, FontColor]
         OnChange = edtServiceAccountChange
       end
     end
@@ -62,6 +66,7 @@ object frmGCPMegaDemo: TfrmGCPMegaDemo
         Size.Height = 19.000000000000000000
         Size.PlatformDefault = False
         Text = 'OAuth Scope'
+        TextSettings.Font.Size = 14.000000000000000000
         TextSettings.HorzAlign = Leading
       end
       object edtOAuthScope: TEdit
@@ -69,9 +74,11 @@ object frmGCPMegaDemo: TfrmGCPMegaDemo
         Align = Client
         TabOrder = 1
         Text = 'https://www.googleapis.com/auth/cloud-platform'
+        TextSettings.Font.Size = 14.000000000000000000
         Size.Width = 192.000000000000000000
         Size.Height = 23.000000000000000000
         Size.PlatformDefault = False
+        StyledSettings = [Family, Style, FontColor]
         OnChange = edtServiceAccountChange
       end
     end
@@ -93,9 +100,11 @@ object frmGCPMegaDemo: TfrmGCPMegaDemo
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Client
           TabOrder = 0
+          TextSettings.Font.Size = 14.000000000000000000
           Size.Width = 431.000000000000000000
           Size.Height = 23.000000000000000000
           Size.PlatformDefault = False
+          StyledSettings = [Family, Style, FontColor]
           OnChange = edtServiceAccountChange
         end
         object btnPEMSelect: TButton
@@ -118,6 +127,7 @@ object frmGCPMegaDemo: TfrmGCPMegaDemo
         Size.Height = 19.000000000000000000
         Size.PlatformDefault = False
         Text = 'PEM File'
+        TextSettings.Font.Size = 14.000000000000000000
         TextSettings.HorzAlign = Leading
       end
     end
@@ -194,7 +204,7 @@ object frmGCPMegaDemo: TfrmGCPMegaDemo
         Size.Width = 543.000000000000000000
         Size.Height = 584.000000000000000000
         Size.PlatformDefault = False
-        TabIndex = 1
+        TabIndex = 2
         TabOrder = 2
         TabPosition = PlatformDefault
         Sizes = (
@@ -227,13 +237,14 @@ object frmGCPMegaDemo: TfrmGCPMegaDemo
             Size.Height = 552.000000000000000000
             Size.PlatformDefault = False
             Text = 'Please select a service and execute a request'
+            TextSettings.Font.Size = 14.000000000000000000
           end
         end
         object tabError: TTabItem
           CustomIcon = <
             item
             end>
-          IsSelected = True
+          IsSelected = False
           Size.Width = 63.000000000000000000
           Size.Height = 26.000000000000000000
           Size.PlatformDefault = False
@@ -257,7 +268,7 @@ object frmGCPMegaDemo: TfrmGCPMegaDemo
             ReadOnly = True
             StyledSettings = [Style, FontColor]
             TextSettings.Font.Family = 'Consolas'
-            TextSettings.Font.Size = 11.000000000000000000
+            TextSettings.Font.Size = 14.000000000000000000
             Align = Client
             Margins.Left = 3.000000000000000000
             Margins.Top = 3.000000000000000000
@@ -266,6 +277,7 @@ object frmGCPMegaDemo: TfrmGCPMegaDemo
             Size.Width = 537.000000000000000000
             Size.Height = 502.000000000000000000
             Size.PlatformDefault = False
+            StyleLookup = 'memostyle'
             TabOrder = 1
             Viewport.Width = 533.000000000000000000
             Viewport.Height = 498.000000000000000000
@@ -275,7 +287,7 @@ object frmGCPMegaDemo: TfrmGCPMegaDemo
           CustomIcon = <
             item
             end>
-          IsSelected = False
+          IsSelected = True
           Size.Width = 75.000000000000000000
           Size.Height = 26.000000000000000000
           Size.PlatformDefault = False
@@ -296,6 +308,7 @@ object frmGCPMegaDemo: TfrmGCPMegaDemo
               Size.Height = 24.000000000000000000
               Size.PlatformDefault = False
               Text = 'Headers'
+              TextSettings.Font.Size = 14.000000000000000000
             end
             object memHeaders: TMemo
               Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
@@ -303,7 +316,7 @@ object frmGCPMegaDemo: TfrmGCPMegaDemo
               ReadOnly = True
               StyledSettings = [Style, FontColor]
               TextSettings.Font.Family = 'Consolas'
-              TextSettings.Font.Size = 11.000000000000000000
+              TextSettings.Font.Size = 14.000000000000000000
               Align = Client
               Size.Width = 543.000000000000000000
               Size.Height = 209.000000000000000000
@@ -316,7 +329,7 @@ object frmGCPMegaDemo: TfrmGCPMegaDemo
           object layContent: TLayout
             Align = Client
             Size.Width = 543.000000000000000000
-            Size.Height = 325.000000000000000000
+            Size.Height = 301.000000000000000000
             Size.PlatformDefault = False
             TabOrder = 0
             object Text5: TText
@@ -325,6 +338,7 @@ object frmGCPMegaDemo: TfrmGCPMegaDemo
               Size.Height = 24.000000000000000000
               Size.PlatformDefault = False
               Text = 'Content'
+              TextSettings.Font.Size = 14.000000000000000000
             end
             object memContent: TMemo
               Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
@@ -332,15 +346,23 @@ object frmGCPMegaDemo: TfrmGCPMegaDemo
               ReadOnly = True
               StyledSettings = [Style, FontColor]
               TextSettings.Font.Family = 'Consolas'
-              TextSettings.Font.Size = 11.000000000000000000
+              TextSettings.Font.Size = 14.000000000000000000
               Align = Client
               Size.Width = 543.000000000000000000
-              Size.Height = 301.000000000000000000
+              Size.Height = 277.000000000000000000
               Size.PlatformDefault = False
               TabOrder = 1
               Viewport.Width = 539.000000000000000000
-              Viewport.Height = 297.000000000000000000
+              Viewport.Height = 273.000000000000000000
             end
+          end
+          object lblStatus: TText
+            Align = MostBottom
+            Position.Y = 534.000000000000000000
+            Size.Width = 543.000000000000000000
+            Size.Height = 24.000000000000000000
+            Size.PlatformDefault = False
+            TextSettings.Font.Size = 14.000000000000000000
           end
         end
       end

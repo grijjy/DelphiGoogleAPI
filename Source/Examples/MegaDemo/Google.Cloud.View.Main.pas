@@ -4,6 +4,8 @@ interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  System.IOUtils,
+
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.StdCtrls,
   FMX.Edit, FMX.ScrollBox, FMX.Memo, FMX.Objects, FMX.TabControl, FMX.Layouts,
   FMX.Controls.Presentation, System.Actions, FMX.ActnList,
@@ -49,15 +51,20 @@ type
     ActionList1: TActionList;
     actOpenPEMFile: TAction;
     Button1: TButton;
+    lblStatus: TText;
     procedure FormResize(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure actOpenPEMFileExecute(Sender: TObject);
     procedure edtServiceAccountChange(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
+    FInitialized: Boolean;
+
     procedure ResizeControls;
     procedure UpdateGoogleCloudProperties;
     procedure ViewResponse(HTTPResponse: IHTTPResponse);
+    function GetSettingsFilename: String;
   protected
     function GoogleCloud: IGoogleCloud;
   public
@@ -103,16 +110,21 @@ begin
     lblErrorCode.Text := HTTPResponse.HTTPResponseCode.ToString;
     memError.Text := HTTPResponse.Headers;
   end;
+
+  lblStatus.Text := 'Response time: ' + HTTPResponse.ResponseTime.ToString;
 end;
 
 procedure TfrmGCPMegaDemo.edtServiceAccountChange(Sender: TObject);
 begin
-  UpdateGoogleCloudProperties;
+  if FInitialized then
+  begin
+    UpdateGoogleCloudProperties;
+  end;
 end;
 
 procedure TfrmGCPMegaDemo.UpdateGoogleCloudProperties;
 begin
-  GoogleCloud.SetAccountProperties(
+  GoogleCloud.InitializeGoogleCloud(
     edtServiceAccount.Text,
     edtOAuthScope.Text,
     edtPEMFile.Text);
@@ -124,7 +136,33 @@ begin
   tcResults.TabPosition := TTabPosition.None;
   tcResults.TabIndex := 0;
 
-  UpdateGoogleCloudProperties;
+  if FileExists(GetSettingsFilename) then
+  begin
+    GoogleCloud.LoadSettings(GetSettingsFilename);
+
+    edtServiceAccount.Text := GoogleCloud.GetServiceAccount;
+    edtOAuthScope.Text := GoogleCloud.GetOAuthScope;
+    edtPEMFile.Text := GoogleCloud.GetPrivateKeyFilename;
+  end
+  else
+  begin
+    UpdateGoogleCloudProperties;
+  end;
+
+  FInitialized := True;
+end;
+
+procedure TfrmGCPMegaDemo.FormDestroy(Sender: TObject);
+begin
+  GoogleCloud.SaveSettings(GetSettingsFilename);
+end;
+
+function TfrmGCPMegaDemo.GetSettingsFilename: String;
+begin
+  Result :=
+    IncludeTrailingPathDelimiter(System.IOUtils.TPath.GetDocumentsPath) +
+    IncludeTrailingPathDelimiter('DelphiGoogleCloud') +
+    'config.json';
 end;
 
 procedure TfrmGCPMegaDemo.FormResize(Sender: TObject);

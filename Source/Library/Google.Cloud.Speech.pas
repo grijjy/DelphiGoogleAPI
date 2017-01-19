@@ -5,8 +5,6 @@ interface
 uses
   SysUtils, Classes, System.DateUtils, System.NetEncoding, JSON,
 
-  Grijjy.Http,
-  Grijjy.JWT,
   Grijjy.Bson,
 
   Google.Cloud.Types,
@@ -22,8 +20,15 @@ type
       const AudioURI: String;
       const LanguageCode: String = TLanguageCode.en_US;
       const MaxAlternatives: Integer = 1;
-      const ProfanityFilter: Boolean = False;
-      const SpeechContext: TJSONString = ''): ISpeechSyncRecognizeResponse;
+      const ProfanityFilter: Boolean = False): ISpeechSyncRecognizeResponse; overload; virtual;
+    function SyncRecognize(
+      const SpeechEncoding: String;
+      const SampleRate: TSpeechSampleRate;
+      const AudioURI: String;
+      const LanguageCode: String;
+      const MaxAlternatives: Integer;
+      const ProfanityFilter: Boolean;
+      const SpeechContext: TgoBsonDocument): ISpeechSyncRecognizeResponse; overload; virtual;
   public
     constructor Create; override;
   end;
@@ -35,14 +40,33 @@ uses
 
 { TSpeechService }
 
-function TSpeechService.SyncRecognize(
-  const SpeechEncoding: String;
-  const SampleRate: TSpeechSampleRate;
-  const AudioURI: String;
-  const LanguageCode: String = TLanguageCode.en_US;
-  const MaxAlternatives: Integer = 1;
-  const ProfanityFilter: Boolean = False;
-  const SpeechContext: TJSONString = ''): ISpeechSyncRecognizeResponse;
+constructor TSpeechService.Create;
+begin
+  inherited;
+
+  ServiceName := 'speech';
+  ServiceVersion := 'v1beta1';
+end;
+
+function TSpeechService.SyncRecognize(const SpeechEncoding: String;
+  const SampleRate: TSpeechSampleRate; const AudioURI, LanguageCode: String;
+  const MaxAlternatives: Integer;
+  const ProfanityFilter: Boolean): ISpeechSyncRecognizeResponse;
+begin
+  Result := SyncRecognize(
+    SpeechEncoding,
+    SampleRate,
+    AudioURI,
+    LanguageCode,
+    MaxAlternatives,
+    ProfanityFilter,
+    TgoBsonDocument.Create);
+end;
+
+function TSpeechService.SyncRecognize(const SpeechEncoding: String;
+  const SampleRate: TSpeechSampleRate; const AudioURI, LanguageCode: String;
+  const MaxAlternatives: Integer; const ProfanityFilter: Boolean;
+  const SpeechContext: TgoBsonDocument): ISpeechSyncRecognizeResponse;
 begin
   Result := TSpeechSyncRecognizeResponse.Create;
 
@@ -54,19 +78,11 @@ begin
         Add('sampleRate', SampleRate).
         Add('languageCode', LanguageCode).
         Add('maxAlternatives', MaxAlternatives).
-        Add('profanityFilter', ProfanityFilter)).
-        //Add('speechContext', SpeechContext)).  { TODO : Fix }
+        Add('profanityFilter', ProfanityFilter).
+        Add('speechContext', SpeechContext)).
       Add('audio', TgoBsonDocument.Create.
         Add('uri', AudioURI)).ToJSON,
     Result);
-end;
-
-constructor TSpeechService.Create;
-begin
-  inherited;
-
-  ServiceName := 'speech';
-  ServiceVersion := 'v1beta1';
 end;
 
 end.
