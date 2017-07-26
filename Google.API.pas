@@ -30,7 +30,7 @@ type
   public
     { Post a request to the Google Cloud APIs }
     function Post(const AUrl, ARequest: String; out AResponseHeaders, AResponseContent: String;
-      const ARecvTimeout: Integer = DEFAULT_TIMEOUT_RECV): Integer;
+      const ARecvTimeout: Integer = TIMEOUT_RECV): Integer;
   public
     { Returns the current access token }
     property AccessToken: String read GetAccessToken;
@@ -148,7 +148,7 @@ begin
     HTTP.RequestBody := ARequest;
     HTTP.Authorization := 'Bearer ' + AccessToken;
     AResponseContent := HTTP.Post(AUrl, ARecvTimeout);
-    AResponseHeaders := HTTP.ResponseHeaders.Text;
+    AResponseHeaders := HTTP.ResponseHeaders.AsString;
     Result := HTTP.ResponseStatusCode;
   finally
     HTTP.Free;
