@@ -4,11 +4,9 @@ interface
 
 uses
   SysUtils, System.Diagnostics, System.Threading, System.Classes,
-  System.Net.URLClient, System.Net.HttpClient, System.Net.HttpClientComponent,
-
-  Grijjy.Http,
 
   Google.Cloud,
+  Google.Cloud.Network,
   Google.Cloud.Types,
   Google.Cloud.Interfaces;
 
@@ -21,7 +19,9 @@ type
     function GoogleCloud: IGoogleCloud;
 
     function BuildGoogleCloudURL(const ServiceMethod: String): String; virtual;
-    function Request(const RequestType: THTTPRequestType; const ServiceMethod, Contents: String; HTTPResponse: IHTTPResponse; const ReceiveTimeout: Integer): THTTPResponseCode; virtual;
+    function Request(const RequestType: THTTPRequestType;
+  const ServiceMethod, Contents: String; HTTPResponse: IHTTPResponse;
+  const ReceiveTimeout: Integer): THTTPResponseCode; virtual;
 
     procedure Log(const Text: String; const Severity: TLogSeverity = TLogSeverity.Info; const Timestamp: TDateTime = 0); overload;
     procedure Log(const Text: String; const Args: Array of const; const Severity: TLogSeverity = TLogSeverity.Info; const Timestamp: TDateTime = 0); overload;
@@ -186,42 +186,21 @@ function TGoogleCloudService.Request(const RequestType: THTTPRequestType;
   const ServiceMethod, Contents: String; HTTPResponse: IHTTPResponse;
   const ReceiveTimeout: Integer): THTTPResponseCode;
 var
-  //Stream: TStringStream;
-  //Response: TMemoryStream;
-  NetHTTPClient: TgoHTTPClient;
-  URL: String;
   StopWatch: TStopwatch;
 begin
   Stopwatch := TStopwatch.Create;
   StopWatch.Reset;
   Stopwatch.Start;
 
-  NetHTTPClient := TgoHTTPClient.Create;
-  try
-    NetHTTPClient.RequestBody := Contents;
-    NetHTTPClient.Authorization := 'Bearer ' + GoogleCloud.GetAccessToken;
+  Result := TNetworkService.Request(
+    RequestType,
+    BuildGoogleCloudURL(ServiceMethod),
+    Contents,
+    GoogleCloud.GetAccessToken,
+    HTTPResponse,
+    ReceiveTimeout);
 
-    URL := BuildGoogleCloudURL(ServiceMethod);
-
-    case RequestType of
-      THTTPRequestType.GET: HTTPResponse.Content := NetHTTPClient.Get(URL, ReceiveTimeout);
-      THTTPRequestType.POST: HTTPResponse.Content := NetHTTPClient.Post(URL, ReceiveTimeout);
-      THTTPRequestType.PUT: HTTPResponse.Content := NetHTTPClient.Put(URL, ReceiveTimeout);
-      THTTPRequestType.DELETE: HTTPResponse.Content := NetHTTPClient.Delete(URL, ReceiveTimeout);
-      THTTPRequestType.OPTIONS: HTTPResponse.Content := NetHTTPClient.Options(URL, ReceiveTimeout);
-    else
-      Assert(False, 'Invalid HTTP Request Type');
-    end;
-
-    HTTPResponse.Headers := NetHTTPClient.ResponseHeaders.AsString;
-    HTTPResponse.HTTPResponseCode := NetHTTPClient.ResponseStatusCode;
-
-    Result := NetHTTPClient.ResponseStatusCode;
-
-    HTTPResponse.ResponseTime := StopWatch.Elapsed;
-  finally
-    FreeAndNil(NetHTTPClient);
-  end;
+  HTTPResponse.ResponseTime := StopWatch.Elapsed;
 end;
 
 end.

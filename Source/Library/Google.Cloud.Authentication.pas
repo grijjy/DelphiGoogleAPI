@@ -5,10 +5,10 @@ interface
 uses
   SysUtils, Classes, System.DateUtils, System.NetEncoding, System.SyncObjs,
 
-  Grijjy.Http,
-  Grijjy.JWT,
-  Grijjy.Bson,
+  XSuperObject,
 
+  Google.Cloud.Types,
+  Google.Cloud.Network,
   Google.Cloud.Service,
   Google.Cloud.Interfaces;
 
@@ -22,7 +22,6 @@ type
     FTokenExpiresTicks: Cardinal;
     FAccessToken: String;
 
-    function ClaimSet(const ServiceAccount, AScope: String; const ExpireSeconds: Cardinal): String;
     function GetAccessToken(const ServiceAccount, OAuthScope, PrivateKey: String; const ExpireSeconds: Cardinal): String;
     procedure ResetAccessToken;
   protected
@@ -34,55 +33,28 @@ type
 
 implementation
 
-function TAuthenticationService.ClaimSet(const ServiceAccount, AScope: String; const ExpireSeconds: Cardinal): String;
-var
-  Doc: TgoBsonDocument;
-begin
-  Doc := TgoBsonDocument.Create;
-  Doc['iss'] := ServiceAccount;
-  Doc['scope'] := AScope;
-  Doc['aud'] := 'https://www.googleapis.com/oauth2/v4/token';
-  Doc['exp'] := DateTimeToUnix(TTimeZone.Local.ToUniversalTime(IncSecond(now, ExpireSeconds)));
-  Doc['iat'] := DateTimeToUnix(TTimeZone.Local.ToUniversalTime(now));
-  Result := Doc.ToJson;
-end;
-
 function TAuthenticationService.Authenticate(const ServiceAccount,
   OAuthScope, PrivateKey: String; const ExpireSeconds: Cardinal): String;
 var
-  HTTP: TgoHTTPClient;
   Response: String;
-  Doc: TgoBsonDocument;
-  JWT: String;
+  X: ISuperObject;
 begin
-  if JavaWebToken(
-    BytesOf(PrivateKey),
-    JWT_RS256,
-    ClaimSet(
-      ServiceAccount,
-      OAuthScope,
-      ExpireSeconds),
-    JWT) then
+  if TNetworkService.Authenticate(
+    ServiceAccount,
+    OAuthScope,
+    PrivateKey,
+    ExpireSeconds,
+    Response) = 200 then
   begin
-    HTTP := TgoHTTPClient.Create;
-    try
-      HTTP.ContentType := 'application/x-www-form-urlencoded';
-      HTTP.RequestBody :=
-        'grant_type=' + TNetEncoding.URL.Encode('urn:ietf:params:oauth:grant-type:jwt-bearer') + '&' +
-        'assertion=' + TNetEncoding.URL.Encode(JWT);
-
-      Response := HTTP.Post('https://www.googleapis.com/oauth2/v4/token');
-
-      if HTTP.ResponseStatusCode = 200 then
-      begin
-        Doc := TgoBsonDocument.Parse(Response);
-        FTokenExpiresInSec := Doc['expires_in'];
-        Result := Doc['access_token'];
-        FLastToken := Result;
-      end;
-    finally
-      HTTP.Free;
-    end;
+    X := SO(Response);
+    FTokenExpiresInSec := X.I['expires_in'];
+    Result := X.S['access_token'];
+    FLastToken := Result;
+  end
+  else
+  begin
+    { TODO : Raise exception? }
+    Result := '';
   end;
 end;
 

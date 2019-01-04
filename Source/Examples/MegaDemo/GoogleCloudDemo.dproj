@@ -198,7 +198,10 @@ $(PostBuildEvent)]]>
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='Win32'">
-        <PostBuildEvent>copy $(PROJECTDIR)\..\..\..\AdditionalFiles\Win32\libeay32.dll $(OUTPUTDIR)\libeay32.dll&amp;&amp;copy $(PROJECTDIR)\..\..\..\AdditionalFiles\Win32\ssleay32.dll $(OUTPUTDIR)\ssleay32.dll&amp;&amp;copy $(PROJECTDIR)\..\..\..\AdditionalFiles\Win32\nghttp2.dll $(OUTPUTDIR)\nghttp2.dll</PostBuildEvent>
+        <PostBuildEvent>copy $(PROJECTDIR)\..\..\..\AdditionalFiles\Win32\libeay32.dll $(OUTPUTDIR)\libeay32.dll
+&amp;&amp;copy $(PROJECTDIR)\..\..\..\AdditionalFiles\Win32\ssleay32.dll $(OUTPUTDIR)\ssleay32.dll
+&amp;&amp;copy $(PROJECTDIR)\..\..\..\AdditionalFiles\Win32\nghttp2.dll $(OUTPUTDIR)\nghttp2.dll
+</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
         <PreBuildEvent/>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
@@ -209,20 +212,6 @@ $(PostBuildEvent)]]>
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="..\..\..\..\GrijjyFoundation\Grijjy.Http.pas"/>
-        <DCCReference Include="..\..\..\..\GrijjyFoundation\Grijjy.JWT.pas"/>
-        <DCCReference Include="..\..\..\..\GrijjyFoundation\Grijjy.Bson.pas"/>
-        <DCCReference Include="..\..\..\..\GrijjyFoundation\Grijjy.BinaryCoding.pas"/>
-        <DCCReference Include="..\..\..\..\GrijjyFoundation\Grijjy.SocketPool.Win.pas"/>
-        <DCCReference Include="..\..\..\..\GrijjyFoundation\Grijjy.Uri.pas"/>
-        <DCCReference Include="..\..\..\..\GrijjyFoundation\Grijjy.Collections.pas"/>
-        <DCCReference Include="..\..\..\..\GrijjyFoundation\Grijjy.MemoryPool.pas"/>
-        <DCCReference Include="..\..\..\..\GrijjyFoundation\Grijjy.OpenSSL.pas"/>
-        <DCCReference Include="..\..\..\..\GrijjyFoundation\Grijjy.Winsock2.pas"/>
-        <DCCReference Include="..\..\..\..\GrijjyFoundation\Grijjy.OpenSSL.API.pas"/>
-        <DCCReference Include="..\..\..\..\GrijjyFoundation\Grijjy.Bson.IO.pas"/>
-        <DCCReference Include="..\..\..\..\GrijjyFoundation\Grijjy.DateUtils.pas"/>
-        <DCCReference Include="..\..\..\..\GrijjyFoundation\Grijjy.SysUtils.pas"/>
         <DCCReference Include="..\..\Library\Google.Cloud.Speech.pas"/>
         <DCCReference Include="..\..\Library\Google.Cloud.pas"/>
         <DCCReference Include="..\..\Library\Google.Cloud.Authentication.pas"/>
@@ -236,6 +225,7 @@ $(PostBuildEvent)]]>
             <FormType>fmx</FormType>
         </DCCReference>
         <DCCReference Include="..\..\Library\Google.Cloud.PubSub.pas"/>
+        <DCCReference Include="..\..\Library\Google.Cloud.Network.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
