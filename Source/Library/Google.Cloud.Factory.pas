@@ -12,6 +12,7 @@ type
     class var FLogger: ILogger;
     class var FAuthenticationService: IGoogleCloudAuthentication;
     class var FSpeechService: IGoogleCloudSpeech;
+    class var FPubSubService: IGoogleCloudPubSub;
   private
     class procedure CheckAPINotRegistered;
 
@@ -35,7 +36,8 @@ uses
   Google.Cloud.Classes,
   Google.Cloud.Logger,
   Google.Cloud.Authentication,
-  Google.Cloud.Speech;
+  Google.Cloud.Speech,
+  Google.Cloud.PubSub;
 
 resourcestring
   StrPleaseDefineTheGPC = 'Please define the GPC API Interfaces before calling GoogleCloud';
@@ -55,6 +57,7 @@ begin
   FLogger := TLogger.Create;
   FAuthenticationService := TAuthenticationService.Create;
   FSpeechService := TSpeechService.Create;
+  FPubSubService := TPubSubService.Create;
 end;
 
 class function TGoogleCloudFactory.GoogleCloud: IGoogleCloud;
@@ -64,7 +67,8 @@ begin
     FGoogleCloud := TGoogleCloud.Create(
       FLogger,
       FAuthenticationService,
-      FSpeechService
+      FSpeechService,
+      FPubSubService
     );
   end;
 

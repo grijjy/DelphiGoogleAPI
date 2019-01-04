@@ -35,11 +35,6 @@ type
     property ResponseTime: TTimeSpan read GetResponseTime write SetResponseTime;
   end;
 
-  TSpeechSyncRecognizeResponse = class(THTTPResponse, ISpeechSyncRecognizeResponse)
-  strict private
-
-  end;
-
 implementation
 
 { THTTPResponse }

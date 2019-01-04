@@ -147,17 +147,19 @@ object frmGCPMegaDemo: TfrmGCPMegaDemo
       Size.Width = 438.000000000000000000
       Size.Height = 607.000000000000000000
       Size.PlatformDefault = False
-      TabIndex = 0
+      TabIndex = 1
       TabOrder = 2
       TabPosition = PlatformDefault
       Sizes = (
+        438s
+        581s
         438s
         581s)
       object tabSpeech: TTabItem
         CustomIcon = <
           item
           end>
-        IsSelected = True
+        IsSelected = False
         Size.Width = 59.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False
@@ -172,6 +174,77 @@ object frmGCPMegaDemo: TfrmGCPMegaDemo
           TabOrder = 0
           Text = 'Go'
           OnClick = Button1Click
+        end
+      end
+      object tabPubSub: TTabItem
+        CustomIcon = <
+          item
+          end>
+        IsSelected = True
+        Size.Width = 61.000000000000000000
+        Size.Height = 26.000000000000000000
+        Size.PlatformDefault = False
+        StyleLookup = ''
+        TabOrder = 0
+        Text = 'PubSub'
+        object Button2: TButton
+          Position.X = 312.000000000000000000
+          Position.Y = 22.000000000000000000
+          TabOrder = 1
+          Text = 'Publish'
+          OnClick = Button2Click
+        end
+        object edtPubSubTopic: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 4
+          Text = 'projects/sharebike-supervisor/topics/test'
+          Position.X = 8.000000000000000000
+          Position.Y = 22.000000000000000000
+          Size.Width = 145.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+        end
+        object Label1: TLabel
+          Position.X = 8.000000000000000000
+          Position.Y = 6.000000000000000000
+          Text = 'Topic:'
+        end
+        object Label2: TLabel
+          Position.X = 160.000000000000000000
+          Position.Y = 6.000000000000000000
+          Text = 'Data:'
+        end
+        object edtPubSubData: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 2
+          Text = '12345'
+          Position.X = 160.000000000000000000
+          Position.Y = 22.000000000000000000
+          Size.Width = 145.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+        end
+        object Button3: TButton
+          Position.X = 312.000000000000000000
+          Position.Y = 86.000000000000000000
+          TabOrder = 0
+          Text = 'Pull'
+          OnClick = Button3Click
+        end
+        object edtPubSubSubscription: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 3
+          Text = 'projects/sharebike-supervisor/subscriptions/test'
+          Position.X = 8.000000000000000000
+          Position.Y = 86.000000000000000000
+          Size.Width = 297.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+        end
+        object Label3: TLabel
+          Position.X = 8.000000000000000000
+          Position.Y = 70.000000000000000000
+          Text = 'Subscription:'
         end
       end
     end
@@ -372,12 +445,12 @@ object frmGCPMegaDemo: TfrmGCPMegaDemo
     DefaultExt = '.pem'
     Filter = 'PEM files (*.pem)|*.pem|All Files (*.*)|*.*'
     Title = 'Select PEM File'
-    Left = 755
-    Top = 76
+    Left = 771
+    Top = 204
   end
   object ActionList1: TActionList
-    Left = 828
-    Top = 85
+    Left = 876
+    Top = 205
     object actOpenPEMFile: TAction
       Text = '...'
       OnExecute = actOpenPEMFileExecute

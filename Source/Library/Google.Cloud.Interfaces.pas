@@ -3,13 +3,17 @@ unit Google.Cloud.Interfaces;
 interface
 
 uses
-  System.TimeSpan,
-
-  Grijjy.Bson,
+  System.SysUtils, System.TimeSpan,
 
   Google.Cloud.Types;
 
 type
+  IHTTPResponse = interface;
+
+  THTTPResponseCallback = reference to procedure(const ServiceMethod,
+    Contents: String; HTTPResponse: IHTTPResponse; const e: Exception;
+    const ResponseCode: THTTPResponseCode);
+
   ILogger = interface
     ['{B92CD011-B050-4814-A35A-5C564DD701AA}']
     procedure Log(const Text: String; const Severity: TLogSeverity = TLogSeverity.Info; const Timestamp: TDateTime = 0); overload;
@@ -42,8 +46,12 @@ type
     procedure ResetAccessToken;
   end;
 
-  ISpeechSyncRecognizeResponse = interface(IHTTPResponse)
+  ISpeechRecognizeResponse = interface(IHTTPResponse)
+    ['{57110540-DA6A-4FAA-B89E-39498D7D87BA}']
+  end;
 
+  IPubSubResponse = interface(IHTTPResponse)
+    ['{44579EEC-BF51-4A77-8EC9-E0E2EAFB3E4A}']
   end;
 
   IGoogleCloudSpeech = interface(IGoogleCloudService)
@@ -54,7 +62,7 @@ type
       const AudioURI: String;
       const LanguageCode: String = TLanguageCode.en_US;
       const MaxAlternatives: Integer = 1;
-      const ProfanityFilter: Boolean = False): ISpeechSyncRecognizeResponse; overload;
+      const ProfanityFilter: Boolean = False): ISpeechRecognizeResponse; overload;
     function SyncRecognize(
       const SpeechEncoding: String;
       const SampleRate: TSpeechSampleRate;
@@ -62,7 +70,15 @@ type
       const LanguageCode: String;
       const MaxAlternatives: Integer;
       const ProfanityFilter: Boolean;
-      const SpeechContext: TgoBsonDocument): ISpeechSyncRecognizeResponse; overload;
+      const SpeechContext: String): ISpeechRecognizeResponse; overload;
+  end;
+
+  IGoogleCloudPubSub = interface(IGoogleCloudService)
+    ['{7049D445-2AE6-4C10-96A8-E7748A529EC7}']
+    function Publish(const Topic, Data: String; const Attributes: array of TKeyValue): IPubSubResponse;
+    function Pull(const Topic: String; const ReturnImmediately: Boolean = True; const MaxMessages: Integer = 10): IPubSubResponse;
+    function Acknowledge(const Subscription: String; const AckIDs: array of String): IPubSubResponse; overload;
+    function Acknowledge(const Subscription: String; PullResponse: IPubSubResponse): IPubSubResponse; overload;
   end;
 
   IGoogleCloud = interface
@@ -76,6 +92,7 @@ type
     function GetPrivateKeyFilename: String;
 
     function Speech: IGoogleCloudSpeech;
+    function PubSub: IGoogleCloudPubSub;
   end;
 
 implementation

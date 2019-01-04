@@ -5,7 +5,7 @@ interface
 uses
   SysUtils, Classes, System.DateUtils, System.NetEncoding, JSON,
 
-  Grijjy.Bson,
+  XSuperObject,
 
   Google.Cloud.Types,
   Google.Cloud.Service,
@@ -20,7 +20,7 @@ type
       const AudioURI: String;
       const LanguageCode: String = TLanguageCode.en_US;
       const MaxAlternatives: Integer = 1;
-      const ProfanityFilter: Boolean = False): ISpeechSyncRecognizeResponse; overload; virtual;
+      const ProfanityFilter: Boolean = False): ISpeechRecognizeResponse; overload; virtual;
     function SyncRecognize(
       const SpeechEncoding: String;
       const SampleRate: TSpeechSampleRate;
@@ -28,7 +28,7 @@ type
       const LanguageCode: String;
       const MaxAlternatives: Integer;
       const ProfanityFilter: Boolean;
-      const SpeechContext: TgoBsonDocument): ISpeechSyncRecognizeResponse; overload; virtual;
+      const SpeechContext: String): ISpeechRecognizeResponse; overload; virtual;
   public
     constructor Create; override;
   end;
@@ -37,6 +37,9 @@ implementation
 
 uses
   Google.Cloud.Classes;
+
+type
+  TSpeechRecognizeResponse = class(THTTPResponse, ISpeechRecognizeResponse);
 
 { TSpeechService }
 
@@ -50,8 +53,7 @@ end;
 
 function TSpeechService.SyncRecognize(const SpeechEncoding: String;
   const SampleRate: TSpeechSampleRate; const AudioURI, LanguageCode: String;
-  const MaxAlternatives: Integer;
-  const ProfanityFilter: Boolean): ISpeechSyncRecognizeResponse;
+  const MaxAlternatives: Integer; const ProfanityFilter: Boolean): ISpeechRecognizeResponse;
 begin
   Result := SyncRecognize(
     SpeechEncoding,
@@ -60,18 +62,35 @@ begin
     LanguageCode,
     MaxAlternatives,
     ProfanityFilter,
-    TgoBsonDocument.Create);
+    '');
 end;
 
 function TSpeechService.SyncRecognize(const SpeechEncoding: String;
   const SampleRate: TSpeechSampleRate; const AudioURI, LanguageCode: String;
   const MaxAlternatives: Integer; const ProfanityFilter: Boolean;
-  const SpeechContext: TgoBsonDocument): ISpeechSyncRecognizeResponse;
+  const SpeechContext: String): ISpeechRecognizeResponse;
+var
+  X: ISuperObject;
 begin
-  Result := TSpeechSyncRecognizeResponse.Create;
+  Result := TSpeechRecognizeResponse.Create;
+
+  X := SO;
+
+  X.O['config'].S['encoding'] := SpeechEncoding;
+  X.O['config'].I['sampleRate'] := SampleRate;
+  X.O['config'].S['languageCode'] := LanguageCode;
+  X.O['config'].I['maxAlternatives'] := MaxAlternatives;
+  X.O['config'].B['profanityFilter'] := ProfanityFilter;
+  X.O['config'].O['speechContext'];
+  X.O['audio'].S['uri'] := AudioURI;
 
   POST(
-    'syncrecognize',
+    'speech:syncrecognize',
+    X.AsJSON,
+    Result);
+(*
+  POST(
+    'speech:syncrecognize',
     TgoBsonDocument.Create.
       Add('config', TgoBsonDocument.Create.
         Add('encoding', SpeechEncoding).
@@ -82,7 +101,7 @@ begin
         Add('speechContext', SpeechContext)).
       Add('audio', TgoBsonDocument.Create.
         Add('uri', AudioURI)).ToJSON,
-    Result);
+    Result);  *)
 end;
 
 end.

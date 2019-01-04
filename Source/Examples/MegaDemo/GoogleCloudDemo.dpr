@@ -26,7 +26,8 @@ uses
   Google.Cloud.Factory in '..\..\Library\Google.Cloud.Factory.pas',
   Google.Cloud.Logger in '..\..\Library\Google.Cloud.Logger.pas',
   Google.Cloud.Classes in '..\..\Library\Google.Cloud.Classes.pas',
-  Google.Cloud.View.Main in 'Google.Cloud.View.Main.pas';
+  Google.Cloud.View.Main in 'Google.Cloud.View.Main.pas',
+  Google.Cloud.PubSub in '..\..\Library\Google.Cloud.PubSub.pas';
 
 {$R *.res}
 

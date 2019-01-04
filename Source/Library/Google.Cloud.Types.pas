@@ -2,10 +2,18 @@ unit Google.Cloud.Types;
 
 interface
 
+const
+  DEFAULT_TIMEOUT_RECV = 10000;
+
 type
   // General
   THTTPResponseCode = Integer;
   TJSONString = String;
+
+  TKeyValue = record
+    Name: String;
+    Value: String;
+  end;
 
   THTTPRequestType = (
     GET,

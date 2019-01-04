@@ -52,12 +52,23 @@ type
     actOpenPEMFile: TAction;
     Button1: TButton;
     lblStatus: TText;
+    tabPubSub: TTabItem;
+    Button2: TButton;
+    edtPubSubTopic: TEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    edtPubSubData: TEdit;
+    Button3: TButton;
+    edtPubSubSubscription: TEdit;
+    Label3: TLabel;
     procedure FormResize(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure actOpenPEMFileExecute(Sender: TObject);
     procedure edtServiceAccountChange(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
   private
     FInitialized: Boolean;
 
@@ -94,6 +105,35 @@ begin
     'gs://cloud-samples-tests/speech/brooklyn.flac',
     'en-US')
   );
+end;
+
+procedure TfrmGCPMegaDemo.Button2Click(Sender: TObject);
+var
+  Attributes: Array of TKeyValue;
+begin
+  Setlength(Attributes, 2);
+
+  Attributes[0].Name := 'test1';
+  Attributes[0].Value := 'value1';
+  Attributes[1].Name := 'test2';
+  Attributes[1].Value := 'value2';
+
+  ViewResponse(GoogleCloud.PubSub.Publish(
+    edtPubSubTopic.Text,
+    edtPubSubData.Text,
+    Attributes)
+  );
+end;
+
+procedure TfrmGCPMegaDemo.Button3Click(Sender: TObject);
+var
+  Response: IPubSubResponse;
+begin
+  Response := GoogleCloud.PubSub.Pull(edtPubSubSubscription.Text);
+
+  ViewResponse(Response);
+
+  GoogleCloud.PubSub.Acknowledge(edtPubSubSubscription.Text, Response);
 end;
 
 procedure TfrmGCPMegaDemo.ViewResponse(HTTPResponse: IHTTPResponse);

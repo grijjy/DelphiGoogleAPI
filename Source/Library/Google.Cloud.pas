@@ -7,8 +7,7 @@ interface
 uses
   SysUtils, SyncObjs, Classes, IOUtils,
 
-  Grijjy.Http,
-  Grijjy.Bson,
+  XSuperObject,
 
   Google.Cloud.Interfaces;
 
@@ -28,6 +27,7 @@ type
 
     // Google Cloud Services
     FSpeechService: IGoogleCloudSpeech;
+    FPubSubService: IGoogleCloudPubSub;
 
     procedure SaveSettings(const Filename: String);
     procedure LoadSettings(const Filename: String);
@@ -46,11 +46,10 @@ type
     // IGoogleCloud
     function Authentication: IGoogleCloudAuthentication;
     function Speech: IGoogleCloudSpeech;
+    function PubSub: IGoogleCloudPubSub;
   public
-    constructor Create(
-      Logger: ILogger;
-      AuthenticationService: IGoogleCloudAuthentication;
-      SpeechService: IGoogleCloudSpeech);
+    constructor Create(Logger: ILogger; AuthenticationService: IGoogleCloudAuthentication;
+      SpeechService: IGoogleCloudSpeech; PubSubService: IGoogleCloudPubSub);
     destructor Destroy; override;
   end;
 
@@ -64,14 +63,13 @@ const
 
 { TGoogle }
 
-constructor TGoogleCloud.Create(
-  Logger: ILogger;
-  AuthenticationService: IGoogleCloudAuthentication;
-  SpeechService: IGoogleCloudSpeech);
+constructor TGoogleCloud.Create(Logger: ILogger; AuthenticationService: IGoogleCloudAuthentication;
+  SpeechService: IGoogleCloudSpeech; PubSubService: IGoogleCloudPubSub);
 begin
   FLogger := Logger;
   FAuthenticationService := AuthenticationService;
   FSpeechService := SpeechService;
+  FPubSubService := PubSubService;
 end;
 
 destructor TGoogleCloud.Destroy;
@@ -81,14 +79,18 @@ begin
 end;
 
 procedure TGoogleCloud.SaveSettings(const Filename: String);
+var
+  X: ISuperObject;
 begin
   ForceDirectories(ExtractFileDir(Filename));
 
-  TgoBsonDocument.Create.
-    Add('serviceAccount', FServiceAccount).
-    Add('oAuthScope', FOAuthScope).
-    Add('privateKeyFilename', FPrivateKeyFilename).
-    SaveToJsonFile(Filename);
+  X := SO;
+
+  X.S['serviceAccount'] := FServiceAccount;
+  X.S['oAuthScope'] := FOAuthScope;
+  X.S['privateKeyFilename'] := FPrivateKeyFilename;
+
+  X.SaveTo(Filename, True);
 end;
 
 function TGoogleCloud.GetServiceAccount: String;
@@ -134,15 +136,20 @@ end;
 
 procedure TGoogleCloud.LoadSettings(const Filename: String);
 var
-  Doc: TgoBsonDocument;
+  X: ISuperObject;
 begin
-  Doc := TgoBsonDocument.Create.LoadFromJsonFile(Filename);
+  X := SO(TFile.ReadAllText(Filename));
 
   InitializeGoogleCloud(
-    Doc['serviceAccount'],
-    Doc['oAuthScope'],
-    Doc['privateKeyFilename']
+    X.S['serviceAccount'],
+    X.S['oAuthScope'],
+    X.S['privateKeyFilename']
   );
+end;
+
+function TGoogleCloud.PubSub: IGoogleCloudPubSub;
+begin
+  Result := FPubSubService;
 end;
 
 function TGoogleCloud.GetOAuthScope: String;
